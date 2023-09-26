@@ -87,25 +87,25 @@ const Header = () => {
               <div className='optionItem'>
                 <span className='optionText'>Adult</span>
                 <div className='optionCounter'>
-                  <button className='optionCounterButton' onClick={()=>handleOption('adult', 'd')}>-</button>
+                  <button disabled={option.children <= 0}className='optionCounterButton' onClick={()=>handleOption('adult', 'd')}>-</button>
                   <span className='optionCounterNumber'>{option.adult}</span>
-                  <button disabled={option.children <= 1}className='optionCounterButton' onClick={()=>handleOption('adult', 'i')}>+</button>
+                  <button className='optionCounterButton' onClick={()=>handleOption('adult', 'i')}>+</button>
                 </div>
               </div>
               <div className='optionItem'>
                 <span className='optionText'>Children</span>
                 <div className='optionCounter'>
-                  <button className='optionCounterButton' onClick={()=>handleOption('children', 'd')}>-</button>
+                  <button disabled={option.children <= 0}className='optionCounterButton' onClick={()=>handleOption('children', 'd')}>-</button>
                   <span className='optionCounterNumber'>{option.children}</span>
-                  <button disabled={option.children <= 0}className='optionCounterButton' onClick={()=>handleOption('children', 'i')}>+</button>
+                  <button className='optionCounterButton' onClick={()=>handleOption('children', 'i')}>+</button>
                 </div>
               </div>
               <div className='optionItem'>
                 <span className='optionText'>Room</span>
                 <div className='optionCounter'>
-                  <button className='optionCounterButton' onClick={()=>handleOption('room', 'd')}>-</button>
+                  <button disabled={option.children <= 0}className='optionCounterButton' onClick={()=>handleOption('room', 'd')}>-</button>
                   <span className='optionCounterNumber'>{option.room}</span>
-                  <button disabled={option.children <= 1}className='optionCounterButton' onClick={()=>handleOption('room', 'i')}>+</button>
+                  <button className='optionCounterButton' onClick={()=>handleOption('room', 'i')}>+</button>
                 </div>
               </div>
             </div>}
