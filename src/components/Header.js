@@ -7,9 +7,11 @@ import { DateRange } from 'react-date-range'
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
 import {format} from 'date-fns'
+import { useNavigate } from 'react-router-dom'
 
 const Header = ({type}) => {
   const [openDate, setOpenDate] = useState(false)
+  const [destination, setDestination] = useState('')
   const [date, setDate] = useState([
     {
       startDate: new Date(),
@@ -23,12 +25,18 @@ const Header = ({type}) => {
     children: 0,
     room:1
   });
-  const handleOption = (name, operation)=>{
-    setOption(prev =>{
-      return{
-        ...prev, [name]: operation === 'i' ? option[name] + 1 : option[name] - 1,
-      }
-    })
+  const navigate = useNavigate()
+  const handleOption = (name, operation) => {
+    setOption((prev) => {
+      return {
+        ...prev,
+        [name]: operation === "i" ? option[name] + 1 : option[name] - 1,
+      };
+    });
+  };
+
+  const handleSearch =()=>{
+    navigate('/hotels',{state: {destination, date, option}})
   }
 
   return (
@@ -70,16 +78,17 @@ const Header = ({type}) => {
         <div className='headerSearch'>
           <div className='headerSearchItem'>
             <FontAwesomeIcon icon={faTaxi} className='headerIcon'/>
-            <input type='text' placeholder='Where to?' className='headerSearchInput' />
+            <input type='text' placeholder='Where to?' className='headerSearchInput' onChange={(e) => setDestination(e.target.value)} />
           </div>
           <div className='headerSearchItem'>
             <FontAwesomeIcon icon={faCalendarDays} className='headerIcon'/>
             <span className='headerSearchText' onClick={()=>setOpenDate(!openDate)}>
               {`${format(date[0].startDate, 'MM/dd/yyyy')} to ${format(date[0].endDate, 'MM/dd/yyyy')} `}
               </span>
-            {openDate && <DateRange editableDateInputs={true} onChange={item => setDate([item.selection])}
-            moveRangeOnFirstSelection={false} ranges={date} className='date'/>}
+            {openDate && (<DateRange editableDateInputs={true} onChange={item => setDate([item.selection])}
+            moveRangeOnFirstSelection={false} ranges={date} className='date' minDate={new Date()}/>)}
           </div>
+
           <div className='headerSearchItem'>
             <FontAwesomeIcon icon={faPerson} className='headerIcon'/>
             <span className='headerSearchText' onClick={()=>setOpenOption(!openOption)}>
@@ -89,7 +98,7 @@ const Header = ({type}) => {
               <div className='optionItem'>
                 <span className='optionText'>Adult</span>
                 <div className='optionCounter'>
-                  <button disabled={option.children <= 0}className='optionCounterButton' onClick={()=>handleOption('adult', 'd')}>-</button>
+                  <button disabled={option.adult <= 1}className='optionCounterButton' onClick={()=>handleOption('adult', 'd')}>-</button>
                   <span className='optionCounterNumber'>{option.adult}</span>
                   <button className='optionCounterButton' onClick={()=>handleOption('adult', 'i')}>+</button>
                 </div>
@@ -105,7 +114,7 @@ const Header = ({type}) => {
               <div className='optionItem'>
                 <span className='optionText'>Room</span>
                 <div className='optionCounter'>
-                  <button disabled={option.children <= 0}className='optionCounterButton' onClick={()=>handleOption('room', 'd')}>-</button>
+                  <button disabled={option.room <= 1}className='optionCounterButton' onClick={()=>handleOption('room', 'd')}>-</button>
                   <span className='optionCounterNumber'>{option.room}</span>
                   <button className='optionCounterButton' onClick={()=>handleOption('room', 'i')}>+</button>
                 </div>
@@ -113,7 +122,7 @@ const Header = ({type}) => {
             </div>}
           </div>
           <div className='headerSearchItem'>
-            <button className='headerBtn'>Search</button>
+            <button className='headerBtn' onClick={handleSearch}>Search</button>
           </div>
         </div>
         </>}
